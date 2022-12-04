@@ -1,9 +1,15 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    {{ error }}
+    Encyclopedia
 {% endblock %}
 
 {% block body %}
-    <h1>Error "{{ error }}" not found</h1>
+    <h1>{{ title }}</h1>
+    <div id="error-notfound">
+        Page: {{ title }} Not Found!
+        <br/>
+        {{ Error }}
+    </div>
+
 {% endblock %}

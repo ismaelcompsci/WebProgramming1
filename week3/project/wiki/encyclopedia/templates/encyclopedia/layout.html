@@ -14,19 +14,20 @@
                 <h2>Wiki</h2>
                 <form action="{% url 'search' %}" method="post">
                     {% csrf_token %}
-                    {{ form }}
-                    <!-- <input class="search" type="text" name="q" placeholder="Search Encyclopedia">--> 
-                    <input type="submit">
+                    <input class="search" type="text" name="q" placeholder="Search Encyclopedia">
+                    <input type="submit" id="search">
                 </form>
                 <div>
                     <a href="{% url 'index' %}">Home</a>
                 </div>
                 <div>
-                    Create New Page
+                    <a href="{% url 'newpage' %}">Create New Page</a>
                 </div>
                 <div>
                     Random Page
                 </div>
+                {% block edit %}
+                {% endblock %}
                 {% block nav %}
                 {% endblock %}
             </div>

@@ -1,63 +1,139 @@
 from django.shortcuts import render
-from django import forms
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
+from markdown2 import Markdown
+import markdown2
 from . import util
 
-class SearchTask(forms.Form):
-    search = forms.CharField(label="search")
 
+markdowner = Markdown()
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries(),
-        "form": SearchTask()
+        "entries": util.list_entries()
     })
 
-def check(request, name):
-    names = util.list_entries()
-    print(request.get_full_path())
-    if name not in names:
+
+
+def load_wiki(request, name):
+
+    entries = util.get_entry(name)
+
+    if not entries:
         return render(request, "encyclopedia/error.html", {
-            "error": name
+            "title": name
+    })
+
+    return render(request, "encyclopedia/load_wiki.html", {
+        "title": name,
+        "info": markdown2.markdown(entries)
+    })
+
+
+def search(request):
+
+
+    if request.method == "POST":
+        title = request.POST["q"]
+        
+        checker = substring_checker(title)
+
+        bl, pg = exists(title)
+
+        if checker:
+            return render(request, "encyclopedia/substring.html",{
+                "entries": checker
+            })
+
+        if bl == False or not checker:
+            return render(request, "encyclopedia/error.html", {
+                "title": title
+            })
+
+        return render(request, "encyclopedia/load_wiki.html", {
+            "title": title,
+            "info": util.get_entry(pg)
+            })
+
+
+
+def newpage(request):
+    if request.method == "POST":
+        title, textarea = request.POST["title"], request.POST["textarea"]
+        
+        bl, pg = exists(title)
+
+        if bl == True:
+            return render(request, "encyclopedia/error.html", {
+                "title": title,
+                "Error": "Already Exists"
+            })
+
+        util.save_entry(title, textarea)
+
+        return render(request, "encyclopedia/load_wiki.html", {
+            "title": title,
+            "info": util.get_entry(title)
+        })
+    return render(request, "encyclopedia/newpage.html")
+
+
+
+
+def editpage(request):
+
+    if request.method == "GET":
+        refer = request.META.get('HTTP_REFERER').split("/")[-1]
+
+        data = util.get_entry(refer)
+
+        return render(request, "encyclopedia/editpage.html", {
+            "title": refer,
+            "data": data
+        })
+    
+
+
+    if request.method == "POST": 
+        print(request.POST)
+
+        info = request.POST["textarea"]
+        title  = request.POST["title"]
+
+        util.save_entry(title, info)
+
+        print(title, info)
+
+        return render(request, "encyclopedia/load_wiki.html", {
+        "title": title,
+        "info": util.get_entry(title)
         })
 
 
 
-def all(request):
-    page = request.get_full_path().split("/")[-1]
-    q = page
-    return render(request, f"encyclopedia/wiki/css.html", {
-        "page": util.get_entry(q),
-        "title": page,
-        "form": SearchTask()
-    })
-
-def search(request):
-
-    if request.method == "POST":
-
-        data = SearchTask(request.POST)
-
-        if data.is_valid():
-
-            search = data.cleaned_data["search"]
-
-            return HttpResponseRedirect(reverse(search))
-
-        else:
-            return render(request, "encyclopedia/index.html", {
-                "form": data
-            })
-    else:
-
-        return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries(),
-        "form": SearchTask()
-    })
 
 
 
 
 
+
+
+
+
+def substring_checker(search):
+    pages = util.list_entries()
+    hit = []
+
+    for page in pages:
+        if page.find(search.upper()) != -1 or page.find(search.lower()) != -1:
+            hit.append(page)
+            print(page)
+    return hit
+
+
+def exists(search):
+    pages = util.list_entries()
+
+    for page in pages:
+        if search.lower() == page.lower():
+            print(page)
+            return True, page
+    return False, None

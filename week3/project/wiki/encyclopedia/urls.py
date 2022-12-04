@@ -1,19 +1,11 @@
 from django.urls import path
-from . import util
+
 from . import views
-
-
-pages = util.list_entries()
-
-
-
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("search", views.search, name="search")
+    path("wiki/<str:name>", views.load_wiki, name="load_wiki"),
+    path("search", views.search, name="search"),
+    path("newpage", views.newpage, name="newpage"),
+    path("editpage", views.editpage, name="editpage")
 ]
-
-for page in pages:
-    urlpatterns.append(path(f"wiki/{page}", views.all, name=page.lower()))
-
-urlpatterns.append(path("wiki/<str:name>",views.check))
