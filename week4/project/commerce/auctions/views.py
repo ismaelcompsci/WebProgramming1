@@ -8,7 +8,10 @@ from .models import User, Auction_item
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    items = Auction_item.objects.all()
+    return render(request, "auctions/index.html", {
+        "items": items
+    })
 
 
 def login_view(request):
@@ -64,14 +67,23 @@ def register(request):
 
 
 # Create Listing
-def create_listing(request):
-    # Title
-    # Description
-    # Starting bid
-    # URL for image
-    # Category
+def sell(request):
+    if request.method == "POST":
+        title = request.POST["title"]
+        description = request.POST["description"]
+        bid = request.POST["bid"]
+        url = request.POST["url"]
+        category = request.POST["category"]
 
-    # Post data
-    
+        auction_item = Auction_item(title=title, description=description, starting_bid=bid, url_image=url, category=category)
+        auction_item.save()
+        #Auction_item.objects.create(auction_item)
 
-    pass
+    return render(request, "auctions/sell.html")
+
+def listing(request, item_id):
+    auction_listing = Auction_item.objects.get(id=item_id)
+
+    return render(request, "auctions/listing.html", {
+        "listing": auction_listing
+    })

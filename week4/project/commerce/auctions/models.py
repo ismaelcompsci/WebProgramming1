@@ -16,6 +16,11 @@ class Auction_item(models.Model):
     def __str__(self):
         return f"{self.title} selling for {self.starting_bid}"
 
+
+# Watchlist model
+# class Watchlist(models.Model):
+#     user = models.ForeignKey()
+
 # Bid model
 
 # Comments on auction listing
