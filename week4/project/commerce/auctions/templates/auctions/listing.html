@@ -1,7 +1,105 @@
 {% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'auctions/individual_list.css'%}" rel="stylesheet" type="text/css">
+{% endblock%}
+
+{% block alert%}
+Bids: {{ listing.bids.all.count }}
+
+{% if listing.bids.last.user == request.user%}
+    {% if not listing.ended %}
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        Your bid is the current bid
+    </div> 
+    {% else %}
+    <div class="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        You Won The Auction
+    </div> 
+    {% endif %}
+{% endif %}
+{% endblock%}
+
+{% block creation %}
+        <div class="creation-name">
+            <span>Auction created by: {{ listing.user }}</span> 
+        </div>
+    {% if request.user == listing.user and not listing.ended %}
+        <form method="post" action="{% url 'auction_close' listing.id %}">
+            {% csrf_token %}
+            <input class="cart-btn" type="submit" value="End Auction">
+        </form>
+    {% endif %}
+    {% if listing.ended == True %}
+        <span id="ended-alert">This Auction has ended</span>
+    {% endif %}
+{% endblock%}
+
+
 
 {% block body%}
-# TODO create listing page
-{{ listing.title }}
+    <main class="container">
+        <div class="left-column">
+            <img src="{{listing.url_image}}" alt="No Image" data-image="black">
+        </div>
+        
+        <div class="right-column">
 
+            <div class="product-description">
+                <span>{{listing.category}}</span>
+                <h1>{{listing.title}}</h1>
+                <p>{{listing.description}}</p>
+            </div>
+
+            <div class="product-price">
+                {% if delete_button %}
+                <span>{{listing.starting_bid}}</span>
+
+                    <!-- Watchlist -->
+                    {% if request.user.is_authenticated %}
+                    <form action="{% url 'watchlist_add' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{listing.id}}" name="listing">
+                        <input type="submit" value="Remove from Watchlist" class="cart-btn">
+                        <input type="hidden" value="Remove" name="listing">
+                    </form>
+                    {% endif %}
+                {% else %}
+                    
+                    {% if listing.bids.all.count > 0 %}
+                        <span>{{ listing.bids.last.amount }}</span>
+                    {% else %}
+                        <span>{{listing.starting_bid}}</span>
+                    {% endif%}
+                    <form action="{% url 'watchlist_add' listing.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" value="{{listing.id}}" name="listing">
+                        <input type="submit" value="Add to Watchlist" class="cart-btn">
+                    </form>
+                    
+                    <!-- end Watchlist -->
+                {% endif%}
+                {% if request.user.is_authenticated and not listing.ended%}
+                <form action="{% url 'auction_bid' listing.id %}" method="post">
+                    {% csrf_token %}
+                    
+                    {% if listing.bids.all.count > 0 %}
+                    <input type="number" name="bid" value="0" step="any" min="{{ listing.bids.last.amount }}">
+                    {% else %}
+                    <input type="number" name="bid" value="0" step="any" min="{{ listing.starting_bid }}">
+                    {% endif%}
+                    <input type="submit" value="Place Bid" class="cart-btn">
+                </form>
+                {% endif %}
+
+            </div>
+        </div> 
+
+        <hr>
+
+    </main>
+    
 {% endblock%}
