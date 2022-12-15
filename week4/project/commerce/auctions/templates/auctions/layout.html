@@ -27,7 +27,13 @@
                     <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-ling" href="{% url 'watchlist' %}">Watchlist</a>
+                    <a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'sell'%}">Sell Item</a>
+                </li>
+                <li>
+                    <a class="nav-link" href="{% url 'category_list'%}">Categories</a>
                 </li>
             {% else %}
                 <li class="nav-item">
@@ -46,6 +52,8 @@
         {% block body %}
         {% endblock %}
         {% block auc %}
+        {% endblock %}
+        {% block comment%}
         {% endblock %}
     </body>
 </html>

@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import User, Auction_item, Bid
+from .models import User, Auction_item, Bid, Category, Comment
 
 
 def index(request):
@@ -70,6 +70,8 @@ def register(request):
 
 
 def listing(request, item_id):
+    if not request.user.is_authenticated:
+        return redirect(login_view)
 
     # check if item in users watchlist
     auction_check = Auction_item.objects.get(id=item_id)
@@ -83,17 +85,24 @@ def listing(request, item_id):
         )
 
     auction = Auction_item.objects.get(id=item_id)
-    return render(request, "auctions/listing.html", {"listing": auction})
+    
+    return render(request, "auctions/listing.html", 
+    {
+        "listing": auction,
+        "comments": Comment.objects.filter(auction=auction)
+    })
 
 
 # Create Listing
 def sell(request):
+    if not request.user.is_authenticated:
+        return redirect(login_view)
     if request.method == "POST":
         title = request.POST["title"]
         description = request.POST["description"]
         bid = request.POST["bid"]
         url = request.POST["url"]
-        category = request.POST["category"]
+        category = Category(name=request.POST["category"])
 
         auction_item = Auction_item(
             title=title,
@@ -103,6 +112,7 @@ def sell(request):
             category=category,
             user=request.user,
         )
+        category.save()
         auction_item.save()
         # Auction_item.objects.create(auction_item)
 
@@ -167,17 +177,26 @@ def auction_close(request, item_id):
     
     return HttpResponseRedirect(reverse("listing", kwargs={"item_id":item_id}))
 
-    
-    # Make highes bidder win
-    # And makes the listing no longer active
-    # if a user is signed in on a closed listing page and the user has won that auciton the page should say so
 
 # Users signed in should be able to add comments
 def auction_comment(request, item_id):
-    ...
+    comment = request.POST["comment"]
+    post_user = request.user
+    auction = Auction_item.objects.get(id=item_id)
+
+    if request.method == "POST":
+        c = Comment(user=post_user, message=comment, auction=auction)
+        c.save()
+
+    url = reverse('listing', kwargs={'item_id': item_id})
+    return HttpResponseRedirect(url)
+
+         
 
 
 def watchlist(request):
+    if not request.user.is_authenticated:
+        redirect(login_view)
 
     return render(
         request,
@@ -186,5 +205,30 @@ def watchlist(request):
             "items": request.user.watchlist.all(),
         },
     )
+
+def category_list(request):
+    return render(request, "auctions/category_list.html", {
+        "categories": Category.objects.all()
+    })
+
+
+def category(request, name):
+    category = Category.objects.get(name=name)
+
+    aucitons = Auction_item.objects.filter(
+        category=category
+    )
+
+    return render(request, "auctions/index.html", {
+        "items": aucitons,
+        "title": category.name
+    })
+
+
+
+
+
+
+
 
 

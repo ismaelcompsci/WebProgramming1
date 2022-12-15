@@ -8,7 +8,11 @@ class User(AbstractUser):
     def __str__(self):
         return f"{self.username}"
 
+class Category(models.Model):
+    name = models.CharField(max_length=32)
 
+    def __str__(self):
+        return f"{self.name}"
 
 # Auction listing model
 class Auction_item(models.Model):
@@ -17,7 +21,7 @@ class Auction_item(models.Model):
     description = models.CharField(max_length=64)
     starting_bid = models.DecimalField(max_digits=7, decimal_places=2, validators=[MinValueValidator(0.01)])
     url_image = models.URLField(default="")
-    category = models.CharField(max_length=64, default="")
+    category = models.ForeignKey(Category, blank=True, null=True, on_delete=models.SET_NULL, related_name="auctions")
 
     # user who created item
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="auctions", default=1)
@@ -47,7 +51,8 @@ class Bid(models.Model):
 class Comment(models.Model):
     message = models.TextField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="comments")
-    auction = models.ForeignKey(Auction_item, on_delete=models.CASCADE, related_name="comment")
+    auction = models.ForeignKey(Auction_item, on_delete=models.CASCADE, related_name="comments")
 
     def __str__(self):
         return f"Comment #{self.id}: {self.user.username} on {self.auction.title}: {self.message}"
+
