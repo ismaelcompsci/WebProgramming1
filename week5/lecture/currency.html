@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Currency Exchange</title>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                
+
+                document.querySelector("form").onsubmit = function() {
+                    fetch("https://api.agify.io/?name=meelad").then(response => response.json())
+                    .then(data => {
+                        const name = document.querySelector("#name").value;
+                        const age = data[name];
+
+                        if (age !== undefined) {
+                            document.querySelector("#result").innerHTML = `Predicted age is ${age}`;
+                        } else {
+                            document.querySelector("#result").innerHTML = "Invalid"
+                        }
+
+                    });
+
+                    return false;
+                }
+            });
+
+        </script>
+    </head>
+    <body>
+        <form>
+            <input id="name" placeholder="name" type="text">
+            <input type="submit" value="Name">
+        </form>
+        <div id="result">
+
+        </div>
+    </body>
+</html>
