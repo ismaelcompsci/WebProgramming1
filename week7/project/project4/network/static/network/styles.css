@@ -1,0 +1,11 @@
+#new-post-border {
+  padding: 20px;
+  border: 1px solid grey;
+  border-radius: 8px;
+}
+
+#new-form-text {
+  height: 125px;
+  font-size: 14pt;
+  width: 100%;
+}
