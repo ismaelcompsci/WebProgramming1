@@ -1,9 +1,17 @@
 {% extends "network/layout.html" %} {% block body %}
+<h1>All posts</h1>
 
-<div id="all-posts">
-  <div>posts</div>
-  <div>posts</div>
-  <div>posts</div>
-  <div>posts</div>
-</div>
+<div id="posts-wall">
+  {% for post in posts %}
+    <div id="post-wall">
+      <div class="post">
+        <h5><b>{{post.post_creator}}</b></h3>
+        <span>{{post.text}}<br></span>
+        <span>{{post.date}}<br></span>
+        <button type="submit" id="like-button"><img src="static/network/non-likedV2.png" alt="like" id="like"></button>
+        <span>{{post.likes.all.count}}</span>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
 {% endblock %}

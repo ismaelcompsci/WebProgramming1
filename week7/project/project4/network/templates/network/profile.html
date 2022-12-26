@@ -1,21 +1,19 @@
 {% extends "network/layout.html" %} {% block body %}
-<h1>All posts</h1>
-<div id="new-post-border">
+
+<div>
+  <h1 style="display: inline-block">{{current_user}}</h1>
   {% if user.is_authenticated %}
-  <form action="{% url 'index' %}" method="post" id="newformpost">
-    {% csrf_token %}
-    <textarea
-      rows="6"
-      class="new-form-text"
-      id="newformpost"
-      name="post-text"
-    ></textarea>
-    <input type="submit" class="btn btn-primary" value="Post" />
-  </form>
+  <button type="submit" id="follow-button" class="btn btn-primary">Follow</button>
   {% endif %}
+</br>
+<div class="follow-numbers">
+  <span class="followers"><strong>{{current_user.followers.count}}</strong>&nbsp;&nbsp;followers</span>
+  <span class="following"><strong>{{current_user.following.count}}</strong>&nbsp;&nbsp;following</span>    
 </div>
 
-<div id="posts-wall">
+</div>
+<div id="posts-wall" class="profile-posts">
+<h3>All Posts</h3>
   {% for post in posts %}
   <div id="post-wall">
     <div class="post">
@@ -37,6 +35,5 @@
       <span>{{post.likes.all.count}}</span>
     </div>
   </div>
-  {% endfor %}
+  {% endfor %}{% endblock %}
 </div>
-{% endblock %}

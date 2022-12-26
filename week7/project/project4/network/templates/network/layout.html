@@ -11,6 +11,8 @@
       crossorigin="anonymous"
     />
     <link href="{% static 'network/styles.css' %}" rel="stylesheet" />
+    <script src="/static/network/main.js"></script>
+    {% block script %}{% endblock%}
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -20,13 +22,13 @@
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="#"
+            <a class="nav-link" href="{% url 'profile' user.id %}"
               ><strong>{{ user.username }}</strong></a
             >
           </li>
           {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'new_posts' %}">All Posts</a>
+            <a class="nav-link" href="{% url 'posts' %}">All Posts</a>
           </li>
           {% if user.is_authenticated %}
           <li class="nav-item">

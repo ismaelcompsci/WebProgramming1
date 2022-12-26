@@ -1,24 +1,28 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
+from .utils import *
+from .models import *
 
-from .models import User
 
 
 def index(request):
     if request.method == "POST":
-        post = post_maker(request)
-        # Username of poster
-        # Post Content
-        # Post Date
-        # Likes
+        post = post_maker(request, request.user)
+        new_post = Post(post_creator=post["post_creator"], text=post["text"], date=post["date"])
+        new_post.save()
 
+    posts = reversed(Post.objects.all())
+    
+    return render(request, "network/index.html", {
+    "posts": posts
+})
 
-
-    return render(request, "network/index.html")
 
 
 def login_view(request):
@@ -73,8 +77,64 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def new_posts(request):
-    """
-    Query database for posts from all users
-    """
-    return render(request, "network/all_posts.html")
+
+def profile(request, profile_id):
+    print(request, profile_id)
+
+    user = User.objects.get(id=profile_id)
+    posts = user.uploader.all()
+
+    return render(request, "network/profile.html", {
+        "current_user": user,
+        "posts": posts
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def posts(request):
+    if request.method == "POST":
+        print("POSTING")
+
+
+    if request.method == "GET":
+        posts = reversed(Post.objects.all())
+
+        return render(request, "network/index.html", {
+            "posts": posts
+        })
+
+
+@csrf_exempt
+def single_post(request, post_id):
+    print(post_id , request)
+    print(request.body)
+    
+    post = Post.objects.get(id=post_id)
+    print(post.post_creator)
+
+    # if PUT if like true like
+        # update like count on page
+    # else dislike
+        #update like count on page
+
+    return HttpResponse(post.post_creator)

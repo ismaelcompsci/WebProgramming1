@@ -1,11 +1,12 @@
 from django.contrib.auth.models import AbstractUser
+from django.utils.timezone import make_aware
 from django.db import models
 from datetime import datetime
 
 
 class User(AbstractUser):
-    likes = models.ForeignKey("Post", on_delete=models.CASCADE, null=True)
-
+    following = models.ManyToManyField("self", blank=True, null=True)
+    followers = models.ManyToManyField("self", blank=True, null=True)
 
 
 
@@ -15,9 +16,17 @@ class Post(models.Model):
     # Text
     text = models.CharField(max_length=255)
     # Date
-    date = models.DateTimeField(default=datetime.now())
+    date = models.DateTimeField(default=datetime.now)
     # Likes
-    likes = models.ManyToManyField(User, related_name="likers", default=0)
+    likes = models.ManyToManyField(User, related_name="likers", default=None, null=True)
+
+    def serialize(self):
+        return {
+            "creator": self.post_creator.username,
+            "text":self.text,
+            "date":self.date,
+            "likes":[user.username for user in self.likes],
+        }
 
 
 # Comments on Post
@@ -28,3 +37,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment #{self.id}:"
+
+

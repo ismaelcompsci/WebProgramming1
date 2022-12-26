@@ -1,11 +1,55 @@
+body {
+  margin-left: 5px;
+}
+
 #new-post-border {
   padding: 20px;
   border: 1px solid grey;
   border-radius: 8px;
 }
 
-#new-form-text {
+.new-form-text {
   height: 125px;
   font-size: 14pt;
   width: 100%;
+}
+
+#post-wall {
+  border: 1px solid grey;
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.post {
+  margin-top: 10px;
+  margin-left: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.like {
+  height: 20px;
+  width: 20px;
+}
+
+#like-button {
+  background: none;
+  border: none;
+}
+
+.btn {
+  margin-left: 50px;
+  margin-top: -20px;
+  width: 200px;
+}
+
+.profile-posts {
+  margin-top: 50px;
+}
+
+.followers {
+  margin-left: 10px;
+}
+.following {
+  margin-left: 10px;
 }
