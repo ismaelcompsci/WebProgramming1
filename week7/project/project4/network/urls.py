@@ -9,6 +9,7 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
     path("profile/<int:profile_id>", views.profile, name="profile"),
+    path("following", views.following, name="following"),
 
 
 
@@ -22,7 +23,7 @@ urlpatterns = [
     # all Posts 
     path("posts", views.posts, name="posts"),
     # single post
-    path("posts/<int:post_id>", views.single_post, name="single_post")
+    path("posts/<int:post_id>", views.single_post, name="single_post"),
 ]
 
 

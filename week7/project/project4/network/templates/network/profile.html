@@ -2,12 +2,20 @@
 
 <div>
   <h1 style="display: inline-block">{{current_user}}</h1>
+  <span hidden id="user-id">{{current_user.id}}</span>
+  <span hidden id="browser-id">{{user.id}}</span>
   {% if user.is_authenticated %}
-  <button type="submit" id="follow-button" class="btn btn-primary">Follow</button>
+    {% if user.username != current_user.username %}
+    {% if is_following == True %}
+    <button type="submit" id="follow-button" class="btn btn-primary">Unfollow</button>
+    {% else %}
+      <button type="submit" id="follow-button" class="btn btn-primary">Follow</button>
+    {% endif%}
+    {% endif %}
   {% endif %}
 </br>
 <div class="follow-numbers">
-  <span class="followers"><strong>{{current_user.followers.count}}</strong>&nbsp;&nbsp;followers</span>
+  <span class="followers"><strong id="followers-count">{{current_user.followers.count}}</strong>&nbsp;&nbsp;followers</span>
   <span class="following"><strong>{{current_user.following.count}}</strong>&nbsp;&nbsp;following</span>    
 </div>
 

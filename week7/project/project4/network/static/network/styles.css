@@ -53,3 +53,9 @@ body {
 .following {
   margin-left: 10px;
 }
+
+#newformpost input {
+  position: relative;
+  margin-top: 5px;
+  margin-left: 0px;
+}

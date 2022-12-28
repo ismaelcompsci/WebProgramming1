@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %} {% block body %}
+<h1>All posts</h1>
+
+<div id="posts-wall">
+  {% for post in posts %}
+  <div id="post-wall">
+    <div class="post">
+      <h5>
+        <a href="{% url 'profile' post.post_creator.id %}"
+          >{{ post.post_creator }}</a
+        >
+      </h5>
+      <span>{{post.text}}<br /></span>
+      <span>{{post.date}}<br /></span>
+      <button type="submit" id="like-button" name="like">
+        <img
+          src="/static/network/non-likedV2.png"
+          alt="like"
+          id="{{post.id}}"
+          class="like"
+        />
+      </button>
+      <span>{{post.likes.all.count}}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -77,33 +77,58 @@ def register(request):
         return render(request, "network/register.html")
 
 
-
+@csrf_exempt
 def profile(request, profile_id):
-    print(request, profile_id)
 
     user = User.objects.get(id=profile_id)
-    posts = user.uploader.all()
+    posts = reversed(user.uploader.all())
 
-    return render(request, "network/profile.html", {
-        "current_user": user,
+    followers_ = user.followers.filter(user_id= request.user).exists()
+
+
+    if request.method == "GET":
+        return render(request, "network/profile.html", {
+            "current_user": user,
+            "posts": posts,
+            "request_user": User.objects.get(id=request.user.id),
+            "is_following": followers_
+        })
+
+    if request.method == "PUT":
+        data = json.loads(request.body)
+
+        
+        if data["follow"] == True:
+            # Follow user
+            print("FOLLOWING")
+            follower = User.objects.get(id=data["doing_following"])
+
+            obj, created = UserFollowing.objects.get_or_create(user_id=follower, following_user_id=user)
+
+            if created == False:
+                return HttpResponse(status=204)
+            obj.save()
+            return HttpResponse(status=204)
+
+        
+        else:
+            # Unfollow user
+            print("DELETING FOLLOWING")
+            obj = UserFollowing.objects.get(user_id=data["doing_following"], following_user_id=profile_id)
+            obj.delete()
+        
+        return HttpResponse(status=204)
+
+
+
+def following(request):
+
+    followed_people = UserFollowing.objects.filter(user_id=request.user.id).values("following_user_id")
+    posts = reversed(Post.objects.filter(post_creator__in=followed_people))
+
+    return render(request, "network/following.html", {
         "posts": posts
     })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

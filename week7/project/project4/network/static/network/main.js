@@ -4,6 +4,12 @@ document.addEventListener("DOMContentLoaded", function () {
       liked(button);
     };
   });
+  // ADD EVENT LISTENER FOR FOLLOW BUTTON ONCLICK RUN FOLLOW() FUNCTION
+  let follow_button = document.querySelector("#follow-button");
+  follow_button.onclick = function () {
+    let follow_user_id = document.querySelector("#user-id").innerHTML;
+    follow(follow_user_id);
+  };
 });
 
 function liked(button) {
@@ -30,5 +36,37 @@ function liked(button) {
   if (source === red_button_path) {
     like_button.src = white_button_path;
     console.log("tha one");
+  }
+}
+
+function follow(user_id) {
+  // IMPLEMENT FOLLOW BUTTON
+  let follow_or_unfollow = document.querySelector("#follow-button");
+  let browsing_id = document.querySelector("#browser-id").innerHTML;
+
+  if (follow_or_unfollow.innerHTML === "Follow") {
+    fetch(`${user_id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        follow: true,
+        being_followed: user_id,
+        doing_following: browsing_id,
+      }),
+    });
+    follow_or_unfollow.innerHTML = "Unfollow";
+    count = document.querySelector("#followers-count");
+    count.innerHTML++;
+  } else {
+    fetch(`${user_id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        follow: false,
+        being_followed: user_id,
+        doing_following: browsing_id,
+      }),
+    });
+    follow_or_unfollow.innerHTML = "Follow";
+    count = document.querySelector("#followers-count");
+    count.innerHTML--;
   }
 }
