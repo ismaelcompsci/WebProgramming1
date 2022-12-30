@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -17,10 +18,24 @@ def index(request):
         new_post = Post(post_creator=post["post_creator"], text=post["text"], date=post["date"])
         new_post.save()
 
-    posts = reversed(Post.objects.all())
+    posts = Post.objects.all().order_by("-date")
+
+    paginator = Paginator(posts, 10)
+
+    page = request.GET.get("page")
+
+    print(page)
+
+    try:
+        page_obj = paginator.get_page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
     
     return render(request, "network/index.html", {
-    "posts": posts
+    "posts": posts,
+    "page_obj": page_obj
 })
 
 
@@ -83,10 +98,16 @@ def profile(request, profile_id):
     user = User.objects.get(id=profile_id)
     posts = reversed(user.uploader.all())
 
-    followers_ = user.followers.filter(user_id= request.user).exists()
-
 
     if request.method == "GET":
+        try:
+            followers_ = user.followers.filter(user_id= request.user).exists()
+        except TypeError:
+            return render(request, "network/profile.html", {
+                "current_user": user,
+                "posts": posts
+            })
+
         return render(request, "network/profile.html", {
             "current_user": user,
             "posts": posts,
@@ -97,7 +118,6 @@ def profile(request, profile_id):
     if request.method == "PUT":
         data = json.loads(request.body)
 
-        
         if data["follow"] == True:
             # Follow user
             print("FOLLOWING")
@@ -124,14 +144,24 @@ def profile(request, profile_id):
 def following(request):
 
     followed_people = UserFollowing.objects.filter(user_id=request.user.id).values("following_user_id")
-    posts = reversed(Post.objects.filter(post_creator__in=followed_people))
+    posts = Post.objects.filter(post_creator__in=followed_people).order_by("-date")
+
+    paginator = Paginator(posts, 10)
+
+    page = request.GET.get("page")
+
+
+    try:
+        page_obj = paginator.get_page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
 
     return render(request, "network/following.html", {
-        "posts": posts
+        "posts": posts,
+        "page_obj": page_obj
     })
-
-
-
 
 
 
@@ -141,25 +171,39 @@ def posts(request):
         print("POSTING")
 
 
+
+
     if request.method == "GET":
-        posts = reversed(Post.objects.all())
+
+        posts = Post.objects.all().order_by("-date")
+
+        paginator = Paginator(posts, 10)
+
+        page = request.GET.get("page")
+
+        try:
+            page_obj = paginator.get_page(page)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+
+        print(page_obj)
+        
 
         return render(request, "network/index.html", {
-            "posts": posts
+            "posts": posts,
+            "page_obj": page_obj
         })
 
 
 @csrf_exempt
 def single_post(request, post_id):
-    print(post_id , request)
-    print(request.body)
-    
-    post = Post.objects.get(id=post_id)
-    print(post.post_creator)
 
-    # if PUT if like true like
-        # update like count on page
-    # else dislike
-        #update like count on page
+    if request.method == "GET":    
+        post = Post.objects.get(id=post_id)
+        return JsonResponse(post.serialize())
 
-    return HttpResponse(post.post_creator)
+    if request.method == "PUT":
+        print (request.body)
+        return HttpResponse(status=204)

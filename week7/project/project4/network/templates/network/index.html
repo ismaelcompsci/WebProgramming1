@@ -16,7 +16,7 @@
 </div>
 
 <div id="posts-wall">
-  {% for post in posts %}
+  {% for post in page_obj %}
   <div id="post-wall">
     <div class="post">
       <h5>
@@ -24,6 +24,17 @@
           >{{ post.post_creator }}</a
         >
       </h5>
+      <button data-edit="text{{post.id}}" id="edit-post">Edit</button>
+      <div id="text{{post.id}}" class="edit-text-area">
+        <textarea
+          rows="6"
+          class="new-form-text"
+          id="newformpost"
+          name="post-text"
+        ></textarea>
+        <button id="close-text">Close</button>
+      </div>
+      <br />
       <span>{{post.text}}<br /></span>
       <span>{{post.date}}<br /></span>
       <button type="submit" id="like-button" name="like">
@@ -39,4 +50,25 @@
   </div>
   {% endfor %}
 </div>
-{% endblock %}
+
+{% if page_obj.has_other_pages %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+        >Previous</a
+      >
+    </li>
+    {% endif %} {% for i in page_obj.paginator.page_range %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ i }}">{{i}}</a>
+    </li>
+    {% endfor %} {% if page_obj.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+    </li>
+    {% endif%}
+  </ul>
+</nav>
+{% endif %} {% endblock %}

@@ -36,7 +36,6 @@ class Post(models.Model):
             "creator": self.post_creator.username,
             "text":self.text,
             "date":self.date,
-            "likes":[user.username for user in self.likes],
         }
 
 

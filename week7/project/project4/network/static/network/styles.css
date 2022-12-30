@@ -2,6 +2,9 @@ body {
   margin-left: 5px;
 }
 
+.edit-text-area {
+  display: none;
+}
 #new-post-border {
   padding: 20px;
   border: 1px solid grey;
