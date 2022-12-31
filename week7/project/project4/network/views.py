@@ -196,14 +196,32 @@ def posts(request):
             "page_obj": page_obj
         })
 
-
 @csrf_exempt
 def single_post(request, post_id):
 
-    if request.method == "GET":    
-        post = Post.objects.get(id=post_id)
-        return JsonResponse(post.serialize())
+    if request.user.is_authenticated:
 
-    if request.method == "PUT":
-        print (request.body)
-        return HttpResponse(status=204)
+        if request.method == "GET":    
+            post = Post.objects.get(id=post_id)
+            return JsonResponse(post.serialize())
+
+        if request.method == "PUT":
+            # User that liked 
+            user = User.objects.get(id=request.user.id)
+            # Post that was liked 
+            post = Post.objects.get(id=post_id)
+
+            data = json.loads(request.body)
+
+            if data["like"] == True:
+                post.likes.add(user)
+                post.save()
+
+            if data["like"] == False:
+                post.likes.remove(user)
+                post.save()
+
+            
+
+            return HttpResponse(status=204)
+    return HttpResponse(status=404)

@@ -63,8 +63,7 @@ function liked(button) {
   let white_button_path = "/static/network/non-likedV2.png";
   let source = like_button.src.replace("http://127.0.0.1:8000", "");
 
-  console.log(like_button);
-  console.log(source);
+  let div = button.parentNode.parentNode;
 
   //liked
   if (source === white_button_path) {
@@ -76,11 +75,19 @@ function liked(button) {
         like: true,
       }),
     });
+    div.querySelector("#like-count").innerHTML++;
   }
   // unliked
   if (source === red_button_path) {
     like_button.src = white_button_path;
-    console.log("tha one");
+    fetch(`posts/${button.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        post_id: button.id,
+        like: false,
+      }),
+    });
+    div.querySelector("#like-count").innerHTML--;
   }
 }
 

@@ -18,12 +18,13 @@
 <div id="posts-wall">
   {% for post in page_obj %}
   <div id="post-wall">
-    <div class="post">
+    <div class="post" id="post{{post.id}}">
       <h5>
         <a href="{% url 'profile' post.post_creator.id %}"
           >{{ post.post_creator }}</a
         >
       </h5>
+      {% if user == post.post_creator%}
       <button data-edit="text{{post.id}}" id="edit-post">Edit</button>
       <div id="text{{post.id}}" class="edit-text-area">
         <textarea
@@ -35,8 +36,20 @@
         <button id="close-text">Close</button>
       </div>
       <br />
+      {% endif %}
       <span>{{post.text}}<br /></span>
       <span>{{post.date}}<br /></span>
+      {% if user.is_authenticated %} {% if user in post.likes.all %}
+      <button type="submit" id="like-button" name="like">
+        <img
+          src="/static/network/liked.png"
+          alt="like"
+          id="{{post.id}}"
+          class="like"
+        />
+      </button>
+      <span id="like-count">{{post.likes.all.count}}</span>
+      {% else %}
       <button type="submit" id="like-button" name="like">
         <img
           src="/static/network/non-likedV2.png"
@@ -45,7 +58,16 @@
           class="like"
         />
       </button>
-      <span>{{post.likes.all.count}}</span>
+      <span id="like-count">{{post.likes.all.count}}</span>
+      {% endif %} {% else %}
+      <img
+        src="/static/network/non-likedV2.png"
+        alt="like"
+        id="{{post.id}}"
+        class="likea"
+      />
+      <span id="like-count">{{post.likes.all.count}}</span>
+      {% endif %}
     </div>
   </div>
   {% endfor %}

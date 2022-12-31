@@ -30,7 +30,8 @@ body {
   padding-bottom: 15px;
 }
 
-.like {
+.like,
+.likea {
   height: 20px;
   width: 20px;
 }
