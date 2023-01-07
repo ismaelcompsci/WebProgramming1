@@ -19,12 +19,12 @@
       rel="stylesheet"
       type="text/css"
     />
-
+    <script src="/static/xqc/islive.js"></script>
     <script src="/static/xqc/main.js"></script>
     <title>{% block title %} xQc {% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-dark">
+    <!-- <nav class="navbar navbar-dark bg-dark">
       <div class="container-fluid">
         <a class="navbar-brand" href="#"
           ><img
@@ -36,6 +36,7 @@
           />
           xQc</a
         >
+        <span id="xqc-live">xQc is currently offline!</span>
         <button
           class="navbar-toggler"
           type="button"
@@ -61,6 +62,99 @@
               <a class="nav-link" href="{% url 'stream' %}">Stream</a>
             </li>
           </ul>
+        </div>
+      </div>
+    </nav> -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'index' %}"
+          ><img
+            src="https://static-cdn.jtvnw.net/emoticons/v2/emotesv2_3a5b59f49ec2433bb76a0071ec4997bb/default/dark/1.0"
+            alt="Logo"
+            width="30"
+            height="24"
+            class="d-inline-block align-text-top"
+          />
+          xQc</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="{% url 'index' %}"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'stream' %}">Stream</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dropdown
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <div class="indicator-container mx-auto justify-content-center">
+            <span id="xqc-live">xQc is currently offline!</span>
+            <div class="live-indicator"></div>
+            <div class="live-viewers"></div>
+            <svg
+              type="color-text-accessible-red"
+              width="20px"
+              height="20px"
+              version="1.1"
+              viewBox="0 0 20 20"
+              x="0px"
+              y="0px"
+              class="people-indicator"
+            >
+              <g>
+                <path
+                  fill-rule="evenodd"
+                  d="M5 7a5 5 0 116.192 4.857A2 2 0 0013 13h1a3 3 0 013 3v2h-2v-2a1 1 0 00-1-1h-1a3.99 3.99 0 01-3-1.354A3.99 3.99 0 017 15H6a1 1 0 00-1 1v2H3v-2a3 3 0 013-3h1a2 2 0 001.808-1.143A5.002 5.002 0 015 7zm5 3a3 3 0 110-6 3 3 0 010 6z"
+                  clip-rule="evenodd"
+                ></path>
+              </g>
+            </svg>
+          </div>
+          <form class="d-flex" role="search">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
         </div>
       </div>
     </nav>

@@ -1,3 +1,114 @@
 #twtich-embed {
   margin-left: -200px;
 }
+html {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol,
+    "Noto Color Emoji";
+}
+
+body {
+  --tw-bg-opacity: 1;
+  background-color: rgb(25 27 31 / var(--tw-bg-opacity));
+}
+
+.streams {
+  width: 100%;
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 1rem;
+  row-gap: 2rem;
+}
+
+.stream-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.stream-container::before {
+  content: "LIVE";
+  background-color: red;
+  color: #ffffff;
+  display: block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  font-weight: 600;
+}
+.stream-container img {
+  width: 100%;
+  border-radius: 15px;
+}
+.stream-container h2 {
+  font-size: 1rem;
+  color: #000;
+  line-height: 1.5;
+  margin-top: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  font-weight: 600;
+  min-height: 3rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.stream-container p {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6441a5;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+.stream-container p svg {
+  margin-right: 0.5rem;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+div {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.title-friends {
+  text-align: center;
+}
+
+.live-indicator {
+  background-color: #eb0400;
+  border-radius: 9000px;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-top: 5px;
+  margin-left: 8px;
+}
+
+.indicator-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  text-align: center;
+}
+
+.live-viewers {
+  color: #dedee3;
+  font-size: 1rem !important;
+  margin-left: 7px;
+}
+
+.people-indicator {
+  margin-left: 5px;
+  color: #ff8280;
+}
