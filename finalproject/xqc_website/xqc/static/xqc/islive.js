@@ -1,5 +1,5 @@
 let clinetId = "s1x7dpfczuw7ubjealt06jct315ei1"; //// DONT STEAL THIS SIR
-let clinetSecret = "l53spssusq84z1choiptuz30dt028l"; //// DONT STEAL THIS EITHER SIR! ill get rid of this soon ;)
+let clinetSecret = "l53spssusq84z1choiptuz30dt028l"; //// DONT STEAL THIS EITHER SIR! ill get rid of this soon
 
 function getTwitchAuthorization() {
   let url = `https://id.twitch.tv/oauth2/token?client_id=${clinetId}&client_secret=${clinetSecret}&grant_type=client_credentials`;
@@ -60,6 +60,7 @@ function renderStreams(data) {
     <a href=${url}>
    <div class="stream-container" id=${user_login}>
         <img src="${hdThumbnail}" />
+        <div class="stream-container-text">
         <h2>${title}</h2>
         <h2>${user_login}</h2>
         <p>
@@ -79,6 +80,7 @@ function renderStreams(data) {
               .toString()
               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")} watching
         </p>
+        </div>
     </div>
     </a>
     `;
@@ -97,6 +99,7 @@ function changelive(data, channel) {
     document.querySelector("#xqc-live").innerHTML = "xQc is currently offline!";
     document.querySelector("#twitch-embed").style.display = "none";
     document.querySelector(".live-indicator").style.display = "none";
+    document.querySelector(".people-indicator").style.display = "none";
   } else {
     document.querySelector("#xqc-live").innerHTML = "xQc is currently online!";
     document.querySelector(".live-indicator").style.display = "block";

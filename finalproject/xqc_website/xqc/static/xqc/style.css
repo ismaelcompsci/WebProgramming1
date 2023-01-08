@@ -9,6 +9,7 @@ html {
 }
 
 body {
+  font-family: Helvetica, Arial, sans-serif;
   --tw-bg-opacity: 1;
   background-color: rgb(25 27 31 / var(--tw-bg-opacity));
 }
@@ -48,8 +49,6 @@ body {
 .stream-container h2 {
   font-size: 1rem;
   color: #000;
-  line-height: 1.5;
-  margin-top: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
@@ -61,7 +60,6 @@ body {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .stream-container p {
-  margin-top: 1rem;
   font-size: 0.9rem;
   color: #6441a5;
   display: flex;
@@ -70,6 +68,10 @@ body {
 }
 .stream-container p svg {
   margin-right: 0.5rem;
+}
+
+.stream-container-text {
+  margin-top: 1rem !important;
 }
 
 a {
@@ -111,4 +113,89 @@ div {
 .people-indicator {
   margin-left: 5px;
   color: #ff8280;
+}
+
+.xqc-offline-chat {
+  padding: 0px 2rem 2rem;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.offline-chat-container {
+  width: 100%;
+  background: #18181b;
+  position: relative;
+  border-radius: 3px;
+  padding: 0.5rem;
+  margin-top: 3rem;
+  white-space: nowrap;
+}
+
+.offline-chats {
+  padding: 0px;
+  margin: 0px;
+  position: relative;
+  white-space: nowrap;
+  white-space: pre-wrap; /* CSS3 */
+  white-space: -moz-pre-wrap; /* Firefox */
+  white-space: -pre-wrap; /* Opera <7 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* IE */
+}
+
+.list-chats {
+  position: relative;
+  height: 600px;
+  width: 100%;
+  overflow: auto;
+  overflow-x: auto;
+  overflow-y: auto;
+  will-change: transform;
+  direction: ltr;
+  white-space: nowrap;
+}
+
+.chat-height {
+  height: 600px;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.single-chat {
+  white-space: nowrap;
+  left: 0px;
+  top: 0px;
+  height: 20px;
+  width: 100%;
+}
+
+.single-chat-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 1px;
+  white-space: nowrap;
+}
+
+.timestamp {
+  user-select: none;
+  font-family: monospace;
+  white-space: nowrap;
+  line-height: 1.1rem;
+  color: #ada599;
+}
+
+.username {
+  margin-left: 5px;
+  user-select: none;
+  font-weight: bold;
+  line-height: 1.1rem;
+  white-space: nowrap;
+  color: #2f7dff;
+}
+
+.message {
+  margin-left: 5px;
+  line-height: 1.1rem;
+  white-space: nowrap;
 }
