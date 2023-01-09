@@ -23,10 +23,17 @@ function get_xqc_logs_today(channel, user) {
     });
 }
 
+function get_user_chatlogs(user) {
+  fetch(`/stream/xqc/${user}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    });
+}
+
 function chat_div(data) {
   let chat_box = document.querySelector(".chat-height");
 
-  console.log(data);
   data.messages.reverse().forEach((element) => {
     let single_msg_div = document.createElement("div");
     let li = document.createElement("li");
