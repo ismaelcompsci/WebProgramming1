@@ -171,10 +171,8 @@ div {
 
 .single-chat-text {
   display: flex;
-  flex-wrap: wrap;
   align-items: flex-start;
   margin-bottom: 1px;
-  white-space: nowrap;
 }
 
 .timestamp {
@@ -190,12 +188,10 @@ div {
   user-select: none;
   font-weight: bold;
   line-height: 1.1rem;
-  white-space: nowrap;
   color: #2f7dff;
 }
 
 .message {
   margin-left: 5px;
   line-height: 1.1rem;
-  white-space: nowrap;
 }

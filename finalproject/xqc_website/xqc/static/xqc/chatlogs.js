@@ -47,7 +47,9 @@ function chat_div(data) {
     single_msg_div.className = "single-chat";
     username.className = "username";
 
-    timestamp.innerHTML = element.timestamp;
+    let d = new Date(Date.parse(element.timestamp));
+
+    timestamp.innerHTML = d.toISOString().replace(/T/, " ").replace(/\..+/, "");
     username.innerHTML = `${element.displayName}:`;
 
     li.append(timestamp);
