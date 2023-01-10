@@ -26,9 +26,5 @@ def get_stream(request, channel):
         data = is_live(channel)
         return JsonResponse(data)
 
-@csrf_exempt
 def get_userlogs(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        data = get_user_chat_logs(username)
-        return JsonResponse(data, safe=False)
+    return render(request, "xqc/chatlogs.html")

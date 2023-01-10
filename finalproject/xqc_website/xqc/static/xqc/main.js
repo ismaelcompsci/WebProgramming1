@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+  if (window.location.pathname === "/chatlogs") {
+    return;
+  }
   var bar_height = document.querySelector(".navbar").offsetHeight;
 
   var embed = new Twitch.Embed("twitch-embed", {
@@ -9,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   getStreams("xqc");
+
   const friends = [
     "xqc",
     "pokelawls",

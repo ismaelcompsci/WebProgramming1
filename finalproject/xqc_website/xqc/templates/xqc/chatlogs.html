@@ -1,0 +1,86 @@
+{% extends "xqc/layout.html"%}{% load static %} {% block script %}
+<script src="/static/xqc/chatlogs.js"></script>
+{% endblock%} {% block body%}
+
+<!-- display last live or Check if stream is live
+  displays last chat messages from livestreamer
+  display offline chat
+  display xqc messages in other chats
+    last seen too
+  display tiktok links that chat links
+-->
+
+<div class="form-box">
+  <form class="d-flex" role="search" id="userlogs-form" action="">
+    <!-- Button trigger modal -->
+    <button
+      type="button"
+      class="btn btn-primary info-button"
+      data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop"
+    >
+      Info
+    </button>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Chat Logs</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Input your twtich username for your chat logs of this month
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input
+      class="form-control me-2"
+      type="search"
+      placeholder="username"
+      name="username"
+      aria-label="Search"
+      id="username"
+    />
+    <button class="btn btn-outline-success" type="submit" id="userlogs-search">
+      Search
+    </button>
+  </form>
+</div>
+<div class="xqc-offline-chat">
+  <h1><span class="badge bg-secondary" id="date"></span></h1>
+  <div class="offline-chat-container">
+    <ul class="offline-chats">
+      <div class="list-chats">
+        <div class="chat-height"></div>
+      </div>
+    </ul>
+  </div>
+</div>
+<hr />
+
+{% endblock %}

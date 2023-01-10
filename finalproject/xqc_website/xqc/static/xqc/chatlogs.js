@@ -1,5 +1,20 @@
 document.addEventListener("DOMContentLoaded", function () {
-  get_xqc_logs_today("xqc", "xqc");
+  console.log(document.URL);
+  if (window.location.pathname === "/") {
+    get_xqc_logs_today("xqc", "xqc");
+  }
+  if (window.location.pathname === "/chatlogs") {
+    document.querySelector("#userlogs-form").onsubmit = function () {
+      document.querySelectorAll(".single-chat").forEach(function (element) {
+        element.remove();
+      });
+      month_year();
+      let user = document.querySelector("#username").value;
+      get_user_chatlogs(user);
+
+      return false;
+    };
+  }
 });
 function get_todays_chat(channel) {
   // Send a GET request to the URL
@@ -24,10 +39,13 @@ function get_xqc_logs_today(channel, user) {
 }
 
 function get_user_chatlogs(user) {
-  fetch(`/stream/xqc/${user}`)
+  fetch(`https://logs.ivr.fi/channel/xqc/user/${user}`, {
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+  })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+      chat_div(data);
     });
 }
 
@@ -98,4 +116,25 @@ function check_text_link(text) {
     }
   });
   return normalString;
+}
+
+function month_year() {
+  var months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  var date = new Date();
+
+  document.getElementById("date").innerHTML =
+    months[date.getMonth()] + " " + date.getFullYear();
 }

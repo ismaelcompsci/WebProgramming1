@@ -195,3 +195,20 @@ div {
   margin-left: 5px;
   line-height: 1.1rem;
 }
+
+.form-box {
+  margin-left: 35%;
+  align-items: center;
+}
+
+#userlogs-form {
+  width: 400px;
+  display: inline-flex;
+  -webkit-box-align: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.info-button {
+  margin-right: 15px !important;
+}
