@@ -44,9 +44,18 @@ function get_user_chatlogs(user) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       chat_div(data);
+      post_user_data(user);
     });
+}
+
+function post_user_data(user) {
+  fetch(`/user`, {
+    method: "POST",
+    body: JSON.stringify({
+      username: user,
+    }),
+  });
 }
 
 function chat_div(data) {
